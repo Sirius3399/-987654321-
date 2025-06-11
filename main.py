@@ -30,14 +30,15 @@ while not game_over:
         if event.type == pg.QUIT:
             game_over = True
         if event.type == pg.KEYDOWN:
-            if event.key == pg.K_UP:
+            if event.key == pg.K_UP and direction != "up":
                 direction = "up"
-            if event.key == pg.K_DOWN:
+            if event.key == pg.K_DOWN and direction != "down":
                 direction = "down"
-            if event.key == pg.K_LEFT:
+            if event.key == pg.K_LEFT and direction != "left":
                 direction = "left"
-            if event.key == pg.K_RIGHT:
+            if event.key == pg.K_RIGHT and direction != "right":
                 direction = "right"
+
     if direction == "left":
         x -= 40
     if direction == "right":
@@ -55,6 +56,23 @@ while not game_over:
         while [apple_x, apple_y] in snake:
             apple_x = randint(1, 19)*40
             apple_y = randint(1, 11) * 40
+
+    if x < 0 or x >= 800 or y <0 or y >= 480:
+        game_over = True
+        message = font.render("Ты проиграл!", True, (255, 0, 255))
+        disp.blit(message, [350, 0])
+        pg.display.update()
+        pg.time.delay(2000)
+        break
+
+    if len(snake) > 2 and snake[-1] in snake[:-1]:
+        game_over = True
+        message = font.render("Ты проиграл!", True, (255, 0, 255))
+        disp.blit(message, [350, 0])
+        pg.display.update()
+        pg.time.delay(2000)
+        break
+
     disp.fill((0, 0, 0))
     for i in range(0, len(snake)):
         disp.blit(snake_body, [snake[i][0], snake[i][1]])
